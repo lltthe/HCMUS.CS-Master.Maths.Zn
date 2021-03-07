@@ -26,3 +26,15 @@ def bezout(a, b):
             return gcd, y - (b // a) * x, x
 
     return egcd(a, b)
+
+def gcd(a, b):
+    PARAM_ERR_MSG = 'Consider finding greatest common divisor for integers only'
+    a = int_check_strict(a, PARAM_ERR_MSG)
+    b = int_check_strict(b, PARAM_ERR_MSG)
+
+    def _gcd(a, b):
+        if a == 0:
+            return b
+        return _gcd(b % a, a)
+
+    return _gcd(a, b)
