@@ -1,4 +1,4 @@
-from utils import int_check_strict, bezout
+from utils import int_check_strict, bezout, gcd
 
 ZN_ERR_MSG_N = 'Z_n structure requires n to be integer >= 2'
 ZN_COND_N = lambda n : n >= 2
@@ -84,12 +84,21 @@ class ZnNumber:
 
         return ZnNumber(result, n)
 
-    def mul_inv(self):
+    def mul_inv(self, mode = 'bezout'):
         n = self.n
-        gcd, inv, _ = bezout(self.reduced, n)
-        if gcd > 1:
-            return ZN_ERR_MSG_INV.format(a = self.original, n = n, gcd = gcd)
-        return ZnNumber(inv % n, n)
+        a = self.reduced
+
+        g = gcd(a, n)
+        if g > 1:
+            return ZN_ERR_MSG_INV.format(a = self.original, n = n, gcd = g)
+
+        if mode == 'bezout':
+            _, inv, _ = bezout(a, n)
+            return ZnNumber(inv % n, n)
+        elif mode == 'euler':
+            return self ** (ZnNumber.totient(n) - 1)
+        else:
+            raise ValueError
 
 # Có thể hoạt động độc lập với class ZnNumber ở trên
 # Mỗi class đều đủ để giả lập Z_n
@@ -137,15 +146,23 @@ class Zn:
         
         return result
 
-    def mul_inv_int(self, num):
+    def mul_inv_int(self, num, mode = 'bezout'):
         num = int_check_strict(num, ZN_ERR_MSG_NUM)
         n = self.n
-        gcd, inv, _ = bezout(num % n, n)
-        if gcd > 1:
-            return ZN_ERR_MSG_INV.format(a = num, n = n, gcd = gcd)
-        return inv % n
 
-    def __str__():
+        g = gcd(num, n)
+        if g > 1:
+            return ZN_ERR_MSG_INV.format(a = num, n = n, gcd = g)
+
+        if mode == 'bezout':
+            _, inv, _ = bezout(num % n, n)
+            return inv % n
+        elif mode == 'euler':
+            return self.pow_int(num, self.totient() - 1)
+        else:
+            raise ValueError
+
+    def __str__(self):
         return 'Z_{}'.format(self.n)
 
     def totient(self):
@@ -169,5 +186,5 @@ class Zn:
     def pow(self, a : ZnNumber, m : ZnNumber):
         return a ** m
 
-    def mul_inv(self, a : ZnNumber):
-        return a.mul_inv()
+    def mul_inv(self, a : ZnNumber, mode = 'bezout'):
+        return a.mul_inv(mode)

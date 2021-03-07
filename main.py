@@ -1,9 +1,8 @@
 from zn import Zn, ZnNumber
-from ui import ZnCalc
+from ui import ConsoleUI
 
 if __name__ == '__main__':
-    ZnCalc().build().go()
-    pass
+    ConsoleUI().run()
 
 '''
 # Test các giải thuật
