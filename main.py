@@ -1,3 +1,8 @@
+""" Program Main
+
+Where you should start running the program!
+"""
+
 from zn import Zn, ZnNumber
 from ui import ConsoleUI
 
@@ -34,7 +39,7 @@ if __name__ == '__main__':
 '''
 
 '''
-# Chỗ test tào lao, xin đừng quan tâm
+# Chỗ test linh tinh, xin đừng quan tâm
 
 if __name__ == '__main__':
     s = '-5 + (3 - 8) + 4 * 13 + 2'
@@ -64,4 +69,3 @@ if __name__ == '__main__':
     print(g['res'])
     
 '''
-
