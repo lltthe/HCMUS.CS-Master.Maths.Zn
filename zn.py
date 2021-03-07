@@ -48,17 +48,18 @@ class ZnNumber:
 
     def __add__(self, x):
         ZnNumber.is_same_base_strict(self, x)
-        return ZnNumber(self.original + x.original, self.n)
+        return ZnNumber(self.reduced + x.reduced, self.n)
 
     def __neg__(self):
-        return ZnNumber(-self.original, self.n)
+        return ZnNumber(-self.reduced, self.n)
 
     def __sub__(self, x):
-        return self.__add__(-x)
+        ZnNumber.is_same_base_strict(self, x)
+        return ZnNumber(self.reduced - x.reduced, self.n)
 
     def __mul__(self, x):
         ZnNumber.is_same_base_strict(self, x)
-        return ZnNumber(self.original * x.original, self.n)
+        return ZnNumber(self.reduced * x.reduced, self.n)
 
     def __str__(self):
         if self.original == self.reduced:
