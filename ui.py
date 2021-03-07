@@ -1,3 +1,8 @@
+""" Modules for the program's user interfaces
+
+Either console or GUI...
+"""
+
 import sys
 import argparse as ap
 
@@ -5,6 +10,12 @@ from zn import Zn, ZnNumber, ZN_COND_N
 from utils import int_check_strict
 
 class ConsoleUI():
+    """ Managing user inputs and outputs via the command line
+
+    run():  start running the program in the command line
+
+    * Other functions are only for internal uses!
+    """
     def __init__(self):
         pass
 

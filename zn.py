@@ -1,3 +1,14 @@
+""" Modules to emulate Z_n structure
+
+And doing calculations with numbers in Z_n, including:
+> +, -, *
+> Finding multiplicative inverse
+    --- using Bezout's identity 
+    --- using Euler's theorem + fast modular exponentiation
+> Fast modular exponentiation
+> Euler's totient function phi
+"""
+
 from utils import int_check_strict, bezout, gcd
 
 ZN_ERR_MSG_N = 'Z_n structure requires n to be integer >= 2'
@@ -9,18 +20,33 @@ ZN_COND_EXP = lambda m : m >= 0
 ZN_ERR_MSG_INV = '{a} is not multiplicative inversible in Z_{n} because ({a}, {n}) = {gcd} > 1'
 
 def totient(n): # Hàm phi Euler
+    """ Euler's totient function
+    """
     n = int_check_strict(n, ZN_ERR_MSG_N, ZN_COND_N)
     phi = n
-    for i in range(2, int(n ** .5) + 1):
+    for i in range(2, int(n ** .5) + 1): # +1 after sqrt to ensure it is included in the range
         if n % i == 0:
             phi -= phi / i
             while n % i == 0:
                 n //= i
-    if n > 1:
+    if n > 1: # Either n is prime in the first place or n is now the last prime factor > sqrt(n)
         phi -= phi / n
     return int(phi)
 
 class ZnNumber:
+    """ Represent a number in a Z_n structure
+
+    original:   initial value
+    reduced:    value after mod n
+
+    +, -, * can be used natively with other ZnNumber var, e.g. a + b
+    Can be chained (e.g. a + b - c * d) and combined with = (e.g. a += b)
+
+    Pow can be used with int, e.g. a ** 1024
+    Pow uses fast modular exponentiation
+
+    mul_inv(): Finding multiplicative inverse
+    """
     def __init__(self, val, base_n):
         self.n = base_n
         self.original = val
@@ -86,6 +112,9 @@ class ZnNumber:
         return ZnNumber(result, n)
 
     def mul_inv(self, mode = 'bezout'):
+        """
+        mode='bezout' or 'euler'
+        """
         n = self.n
         a = self.reduced
 
@@ -104,6 +133,11 @@ class ZnNumber:
 # Có thể hoạt động độc lập với class ZnNumber ở trên
 # Mỗi class đều đủ để giả lập Z_n
 class Zn:
+    """ Another class to represent Z_n structure
+    Can be used for calculations with ints
+
+    Can work independently or be combined with ZnNumber
+    """
     def __init__(self, n):
         n = int_check_strict(n, ZN_ERR_MSG_N, ZN_COND_N)
         self.n = n

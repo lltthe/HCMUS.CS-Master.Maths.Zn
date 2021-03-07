@@ -1,6 +1,6 @@
 """ Program Main
 
-Where you should start running the program!
+Where you should start running the program...
 """
 
 from zn import Zn, ZnNumber

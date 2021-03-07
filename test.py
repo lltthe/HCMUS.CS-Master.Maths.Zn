@@ -1,3 +1,9 @@
+""" For testing and experiments
+
+Generating data for visual demonstration...
+For internal uses only!
+"""
+
 import random, time
 from alive_progress import alive_bar
 
